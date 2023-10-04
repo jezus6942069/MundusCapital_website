@@ -1,27 +1,51 @@
 import yfinance as yf
 from flask import Flask, render_template
+import time
+from flask_socketio import SocketIO, emit
+import threading
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")  
 
-STOCKS = ["AAPL", "MSFT", "GOOGL", "AMZN", "FB", "TSLA", "V", "JPM", "JNJ", "WMT"]
-COMMODITIES = ["GC=F", "SI=F", "CL=F", "HG=F", "ZC=F", "ZS=F", "ZW=F", "SB=F", "CC=F", "KC=F"]  # e.g., GC=F is Gold futures
-ETFS = ["SPY", "IVV", "VTI", "VOO", "QQQ", "VEA", "EFA", "IEFA", "AGG", "IJH"]
-FOREX = ["EURUSD=X", "USDJPY=X", "GBPUSD=X", "USDCAD=X", "USDCHF=X", "AUDUSD=X", "NZDUSD=X", "EURJPY=X", "GBPJPY=X", "EURGBP=X"]
-BONDS = ["^TNX", "^TYX", "^FVX", "^IRX", "^GS2", "^GS5", "^GS10", "^GS20", "^GSPC", "^US30Y"]  
-CRYPTOS = ["BTC-USD", "ETH-USD", "BNB-USD", "ADA-USD", "XRP-USD", "DOGE-USD", "DOT1-USD", "UNI3-USD", "LTC-USD", "LINK-USD"]  # Examples: Bitcoin, Ethereum, Binance Coin, etc.
+
+STOCKS = ["AAPL"]
+COMMODITIES = ["GC=F", ]  
+ETFS = ["SPY"]
+FOREX = ["EURUSD=X"]
+BONDS = ["^TNX" ]  
+CRYPTOS = ["BTC-USD"]  
+
+
+CACHE_TIMEOUT = 9 
+cache = {}
+last_fetch_time = 0
+
+def background_task():
+    global cache
+    while True:
+        print("Fetching new data...")
+        cache['stocks'] = fetch_prices(STOCKS)
+        cache['commodities'] = fetch_prices(COMMODITIES)
+        cache['etfs'] = fetch_prices(ETFS)
+        cache['forex'] = fetch_prices(FOREX)
+        cache['bonds'] = fetch_prices(BONDS)
+        cache['cryptos'] = fetch_prices(CRYPTOS)
+        print("Emitting data:", cache)
+        socketio.emit('data_update', cache)
+        time.sleep(CACHE_TIMEOUT)
 
 
 
 
 @app.route('/')  
 def index():
-    stocks_prices = fetch_prices(STOCKS)
-    commodities_prices = fetch_prices(COMMODITIES)
-    etfs_prices = fetch_prices(ETFS)
-    forex_prices = fetch_prices(FOREX)
-    bonds_prices = fetch_prices(BONDS)
-    crypto_prices = fetch_prices(CRYPTOS)
-    return render_template('index.html', stocks=stocks_prices, commodities=commodities_prices, etfs=etfs_prices, forex=forex_prices, bonds=bonds_prices, cryptos=crypto_prices)
+    return render_template('index.html', 
+                           stocks=cache.get('stocks', {}), 
+                           commodities=cache.get('commodities', {}),
+                           etfs=cache.get('etfs', {}),
+                           forex=cache.get('forex', {}),
+                           bonds=cache.get('bonds', {}),
+                           cryptos=cache.get('cryptos', {}))
 
 def fetch_prices(tickers):
     data = yf.download(tickers, period="1d")
@@ -29,13 +53,19 @@ def fetch_prices(tickers):
     opening_prices = data['Open']
 
     price_data = {}
-
+    print(data)
     for ticker in tickers:
-        close_price = closing_prices[ticker].iloc[0]
-        open_price = opening_prices[ticker].iloc[0]
+        # Check if we're dealing with a single ticker or multiple tickers
+        if len(tickers) == 1:
+            close_price = closing_prices.iloc[0]
+            open_price = opening_prices.iloc[0]
+        else:
+            close_price = closing_prices[ticker].iloc[0]
+            open_price = opening_prices[ticker].iloc[0]
+
         difference = close_price - open_price
 
-        color = "black"
+        color = "white"
         if difference > 0:
             color = "green"
         elif difference < 0:
@@ -48,5 +78,13 @@ def fetch_prices(tickers):
 
     return price_data
 
+@socketio.on('request_data')
+def send_current_data():
+    emit('data_update', cache)
+
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    thread = threading.Thread(target=background_task)
+    thread.start()
+    socketio.run(app, debug=True)

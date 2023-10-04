@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Data</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
 </head>
 <body>
+   
     <header>
         <h1>MundusCapital</h1>
     </header>
     <img src="{{ url_for('static', filename='images/image_1.jpg') }}" alt="Description of the Image" class="header-image">
     <div class="content">
     <div class="container">
+
         <!-- Forex Column -->
-        <div class="container1">  <!-- You might want to change the class to something else if the positioning isn't right -->
+        <div class="container1"> 
             <div class="column">
                 <h2>Forex</h2>
                 {% for ticker, data in forex.items() %}
-                    <div class="row">
-                        <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                        <span style="color: {{ data.color }};">{{ data.price }}</span></div>
+                <div class="row">
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <!-- Modify the ID here -->
+                    <span id="{{ ticker.replace('=', '-') }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
                 {% endfor %}
             </div>
         </div>
 
+
         <!-- Bonds Column -->
-        <div class="container2">  <!-- You might want to change the class to something else if the positioning isn't right -->
+        <div class="container2">  
             <div class="column">
                 <h2>Bonds</h2>
                 {% for ticker, data in bonds.items() %}
-                    <div class="row">
-                        <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                        <span style="color: {{ data.color }};">{{ data.price }}</span></div>
-                {% endfor %}
+                <div class="row">
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
             </div>
         </div>
+
+        
 
         <!-- Stocks Column -->
         <div class="container3">
             <div class="column">
                 <h2>Stocks</h2>
                 {% for ticker, data in stocks.items() %}
-                    <div class="row">
-                        <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                        <span style="color: {{ data.color }};">{{ data.price }}</span></div>
-                {% endfor %}
+                <div class="row">
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
             </div>
         </div>
 
@@ -54,10 +65,11 @@
             <div class="column">
                 <h2>Commodities</h2>
                 {% for ticker, data in commodities.items() %}
-                    <div class="row">
-                        <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                        <span style="color: {{ data.color }};">{{ data.price }}</span></div>
-                {% endfor %}
+                <div class="row">
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
             </div>
         </div>
 
@@ -66,10 +78,11 @@
             <div class="column">
                 <h2>ETFs</h2>
                 {% for ticker, data in etfs.items() %}
-                    <div class="row">
-                        <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                        <span style="color: {{ data.color }};">{{ data.price }}</span></div>
-                {% endfor %}
+                <div class="row">
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
             </div>
         </div>
 
@@ -78,10 +91,11 @@
             <div class="column">
                 <h2>Cryptocurrencies</h2>
                 {% for ticker, data in cryptos.items() %}
-                    <div class="row">
-                        <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                        <span style="color: {{ data.color }};">{{ data.price }}</span></div>
-                {% endfor %}
+                <div class="row">
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
             </div>
         </div>
         
@@ -89,56 +103,76 @@
     </div>
 </div>
 
-<!--
-    <div class="tradingview-chart">
-    <div class="tradingview-widget-container__widget"></div>
-    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-    {
-    "symbols": [
-      [
-        "BITSTAMP:BTCUSD|1Y"
-      ]
-    ],
-    "chartOnly": false,
-    "width": 1000,
-    "height": 500,
-    "locale": "en",
-    "colorTheme": "dark",
-    "autosize": false,
-    "showVolume": false,
-    "showMA": false,
-    "hideDateRanges": false,
-    "hideMarketStatus": false,
-    "hideSymbolLogo": false,
-    "scalePosition": "right",
-    "scaleMode": "Normal",
-    "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-    "fontSize": "10",
-    "noTimeScale": false,
-    "valuesTracking": "1",
-    "changeMode": "price-and-percent",
-    "chartType": "area",
-    "maLineColor": "#2962FF",
-    "maLineWidth": 1,
-    "maLength": 9,
-    "lineWidth": 2,
-    "lineType": 0,
-    "dateRanges": [
-      "1d|1",
-      "1m|30",
-      "3m|60",
-      "12m|1D",
-      "60m|1W",
-      "all|1M"
-    ]
-  }
-    </script>
-</div>
--->
+
 <footer>
     Dominykas Andriusis
 </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+<script> 
+                
+    document.addEventListener("DOMContentLoaded", function() {
+        const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+       
+        socket.on('data_update', function(data) {
+
+            for (const [ticker, tickerData] of Object.entries(data.forex)) {
+            console.log("Updating ticker:", ticker);
+            console.log("Element:", document.getElementById(ticker + '-price'));
+            
+            document.getElementById(ticker + '-price').textContent = tickerData.price;
+            document.getElementById(ticker + '-price').style.color = tickerData.color;
+            }
+
+            for (const [ticker, tickerData] of Object.entries(data.bonds)) {
+            console.log("Updating ticker:", ticker);
+            console.log("Element:", document.getElementById(ticker + '-price'));
+
+            document.getElementById(ticker + '-price').textContent = tickerData.price;
+            document.getElementById(ticker + '-price').style.color = tickerData.color;
+            }
+
+
+            for (const [ticker, tickerData] of Object.entries(data.stocks)) {
+                console.log("Updating ticker:", ticker);
+                console.log("Element:", document.getElementById(ticker + '-price'));
+
+                document.getElementById(ticker + '-price').textContent = tickerData.price;
+                document.getElementById(ticker + '-price').style.color = tickerData.color;
+            }
+
+            for (const [ticker, tickerData] of Object.entries(data.commodities)) {
+                console.log("Updating ticker:", ticker);
+                console.log("Element:", document.getElementById(ticker + '-price'));
+
+                document.getElementById(ticker + '-price').textContent = tickerData.price;
+                document.getElementById(ticker + '-price').style.color = tickerData.color;
+            }
+
+            for (const [ticker, tickerData] of Object.entries(data.etfs)) {
+                console.log("Updating ticker:", ticker);
+                console.log("Element:", document.getElementById(ticker + '-price'));
+
+                document.getElementById(ticker + '-price').textContent = tickerData.price;
+                document.getElementById(ticker + '-price').style.color = tickerData.color;
+            }
+
+            for (const [ticker, tickerData] of Object.entries(data.cryptos)) {
+                console.log("Updating ticker:", ticker);
+                console.log("Element:", document.getElementById(ticker + '-price'));
+
+                document.getElementById(ticker + '-price').textContent = tickerData.price;
+                document.getElementById(ticker + '-price').style.color = tickerData.color;
+            }
+        });
+
+        setInterval(function() {
+        socket.emit('request_data'); 
+    }, 10000);
+    
+    });
+</script>
 
 </body>
 </html>
