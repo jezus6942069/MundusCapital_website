@@ -6,102 +6,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Data</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&display=swap">
+
 </head>
 <body>
    
     <header>
         <h1>MundusCapital</h1>
     </header>
-    <img src="{{ url_for('static', filename='images/image_1.jpg') }}" alt="Description of the Image" class="header-image">
-    <div class="content">
-    <div class="container">
+
+   <!---- <img src="{{ url_for('static', filename='images/image_1.jpg') }}" alt="Description of the Image" class="header-image"> -->
+
+    
+
+    <div class="grid-wrapper">
 
         <!-- Forex Column -->
-        <div class="container1"> 
+      
             <div class="column">
-                <h2>Forex</h2>
-                {% for ticker, data in forex.items() %}
+                
                 <div class="row">
+                    <h2>Forex</h2>
+                {% for ticker, data in forex.items() %}
                     <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
                     <!-- Modify the ID here -->
                     <span id="{{ ticker.replace('=', '-') }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
                 </div>
                 {% endfor %}
             </div>
-        </div>
+
+                <!--  financial news-->
+    
+                <div class="column">
+                <div class="row">
+                    <h2>Bloomberg News</h2>
+                    <ul>
+                        {% for article in news %}
+                        <li>
+                            {% if article.thumbnail %}
+                                <img src="{{ article.thumbnail }}" alt="Article Thumbnail" width="100" height="100">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='default_thumbnail.jpg') }}" alt="Default Thumbnail" width="100" height="100">
+                            {% endif %}
+                            <h3><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h3>
+                            <p>{{ article.description }}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                </div>
+
 
 
         <!-- Bonds Column -->
-        <div class="container2">  
+        
             <div class="column">
-                <h2>Bonds</h2>
-                {% for ticker, data in bonds.items() %}
+                
                 <div class="row">
+                    <h2>Bonds</h2>
+                {% for ticker, data in bonds.items() %}
                     <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
                     <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
                 </div>
             {% endfor %}
             </div>
-        </div>
+        
 
         
 
         <!-- Stocks Column -->
-        <div class="container3">
+   
             <div class="column">
-                <h2>Stocks</h2>
+                
+                <div class="row">
+                    <h2>Stocks</h2>
                 {% for ticker, data in stocks.items() %}
-                <div class="row">
                     <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
                     <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
                 </div>
             {% endfor %}
             </div>
-        </div>
 
-        <!-- Commodities Column -->
-        <div class="container4">
-            <div class="column">
-                <h2>Commodities</h2>
-                {% for ticker, data in commodities.items() %}
-                <div class="row">
-                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
-                </div>
-            {% endfor %}
-            </div>
-        </div>
+                <!--  financial news-->
 
-        <!-- ETFs Column -->
-        <div class="container5">
-            <div class="column">
-                <h2>ETFs</h2>
-                {% for ticker, data in etfs.items() %}
+                <div class="column">
                 <div class="row">
-                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                    <h2>Bloomberg News</h2>
+                    <ul>
+                        {% for article in news %}
+                        <li>
+                            {% if article.thumbnail %}
+                                <img src="{{ article.thumbnail }}" alt="Article Thumbnail" width="100" height="100">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='default_thumbnail.jpg') }}" alt="Default Thumbnail" width="100" height="100">
+                            {% endif %}
+                            <h3><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h3>
+                            <p>{{ article.description }}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-            {% endfor %}
-            </div>
-        </div>
-
-        <!-- crypto Column -->
-        <div class="container6"> 
-            <div class="column">
-                <h2>Cryptocurrencies</h2>
-                {% for ticker, data in cryptos.items() %}
-                <div class="row">
-                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
-                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
                 </div>
-            {% endfor %}
-            </div>
-        </div>
         
 
+        <!-- Commodities Column -->
+       
+            <div class="column">
+               
+                <div class="row">
+                    <h2>Commodities</h2>
+                    {% for ticker, data in commodities.items() %}
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
+            </div>
+    
+
+        <!-- ETFs Column -->
+       
+            <div class="column">
+                
+                <div class="row">
+                    <h2>ETFs</h2>
+                {% for ticker, data in etfs.items() %}
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
+            </div>
+
+        <!--  financial news-->
+
+        <div class="column">
+            <div class="row">
+                <h2>Bloomberg News</h2>
+                <ul>
+                    {% for article in news %}
+                    <li>
+                        {% if article.thumbnail %}
+                            <img src="{{ article.thumbnail }}" alt="Article Thumbnail" width="100" height="100">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='default_thumbnail.jpg') }}" alt="Default Thumbnail" width="100" height="100">
+                        {% endif %}
+                        <h3><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h3>
+                        <p>{{ article.description }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            </div>
+            
+      
+
+        <!-- crypto Column -->
+       
+            <div class="column">
+                
+                <div class="row">
+                    <h2>Crypto</h2>
+                {% for ticker, data in cryptos.items() %}
+                    <a href="https://finance.yahoo.com/quote/{{ ticker }}" target="_blank">{{ ticker }}</a>
+                    <span id="{{ ticker }}-price" style="color: {{ data.color }};">{{ data.price }}</span>
+                </div>
+            {% endfor %}
+            </div>          
+        
     </div>
-</div>
+
 
 
 <footer>

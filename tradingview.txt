@@ -46,9 +46,56 @@
 </div>
 -->
 
+
+.container1 {
+    
+    text-align: left;
+    transform: translateX(100px); 
+}
+
+.container2 {
+    text-align: left;
+    transform: translateX(50px); 
+    
+}
+
+.container3 {
+    text-align: left;
+    transform: translateX(35px); 
+    
+    
+}
+
+.container4{
+    text-align: right;
+    transform: translateX(-35px); 
+}
+
+.container5{
+    text-align: right;
+    transform: translateX(-50px); 
+   
+}
+
+.container6{
+    text-align: right;
+    transform: translateX(-100px); 
+}
  
 
 
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+
+}
 
 
 
