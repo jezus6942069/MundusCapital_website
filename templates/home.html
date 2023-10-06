@@ -1,23 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Data</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&display=swap">
+{% block title %}
+Unique Page Title
+{% endblock %}
 
-</head>
-<body>
-   
-    <header>
-        <h1>MundusCapital</h1>
-    </header>
-
-   <!---- <img src="{{ url_for('static', filename='images/image_1.jpg') }}" alt="Description of the Image" class="header-image"> -->
-
-    
+{% block content %}
 
     <div class="grid-wrapper">
 
@@ -43,11 +30,7 @@
                     <ul>
                         {% for article in news %}
                         <li>
-                            {% if article.thumbnail %}
-                                <img src="{{ article.thumbnail }}" alt="Article Thumbnail" width="100" height="100">
-                            {% else %}
-                                <img src="{{ url_for('static', filename='default_thumbnail.jpg') }}" alt="Default Thumbnail" width="100" height="100">
-                            {% endif %}
+                            <img src="{{ url_for('static', filename='default_thumbnail.jpg') }}" alt="Default Thumbnail" width="100" height="100">
                             <h3><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h3>
                             <p>{{ article.description }}</p>
                         </li>
@@ -174,11 +157,9 @@
         
     </div>
 
+{% endblock %}
 
 
-<footer>
-    Dominykas Andriusis
-</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 
@@ -248,3 +229,6 @@
 
 </body>
 </html>
+
+
+

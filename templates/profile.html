@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Unique Page Title
+{% endblock %}
+
+{% block content %}
+   
+    <main class="profile-content">
+        <h2>User Profile</h2>
+        <div class="profile-details">
+            <p><strong>Username:</strong> JohnDoe</p>
+            <p><strong>Email:</strong> johndoe@example.com</p>
+            <!-- ... other profile details ... -->
+        </div>
+    </main>
+
+    <form action="/submit_email" method="post">
+        <input type="email" name="user_email" placeholder="Enter your Gmail" required>
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}
+   
+</html>

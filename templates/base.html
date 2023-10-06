@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&display=swap">
+
+    <title>{% block title %}Default Title{% endblock %}</title>
+</head>
+<body>
+    <header>
+        
+        <h1>MundusCapital</h1>
+
+        <nav>
+            <ul class="nav-list">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/news">News</a></li>
+                <li><a href="/stocks">Stocks</a></li>
+                <li><a href="/etfs">ETFs</a></li>
+                <li><a href="/crypto">Crypto</a></li>
+                <li><a href="/futures">Futures</a></li>
+                <li><a href="/bonds">Bonds</a></li>
+                <li><a href="/forex">Forex</a></li>
+                <li><a href="/screener">Screener</a></li>
+                <li><a href="/portfolio">Portfolio</a></li>
+                <li><a href="/insider">Insider</a></li>
+                <li><a href="/maps">Maps</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+        </nav>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search..." name="search">
+            <div id="search-results"></div>
+            <button type="submit">Submit</button>
+        </div>
+
+    </header>
+
+    <main>
+        {% block content %}
+
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        Dominykas Andriusis
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+    
+        searchInput.addEventListener('input', function() {
+            const query = this.value;
+            if (query.length > 0) {
+                fetch(`/search?query=${query}`).then(response => response.json()).then(data => {
+                    searchResults.innerHTML = '';
+                    data.results.forEach(result => {
+                        const link = document.createElement('a');
+                        link.href = result.url;
+                        link.target = "_blank";
+                        link.innerText = result.text;
+                        searchResults.appendChild(link);
+                    });
+                });
+            } else {
+                searchResults.innerHTML = '';
+            }
+        });
+    </script>    
+
+</body>
+</html>
+
