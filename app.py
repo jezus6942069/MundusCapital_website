@@ -34,13 +34,13 @@ def background_task():
 def home():
     news_data = fetch_bloomberg_news()
     return render_template('home.html', 
-                           news=news_data,
-                           stocks=cache.get('stocks', {}), 
-                           commodities=cache.get('commodities', {}),
-                           etfs=cache.get('etfs', {}),
-                           forex=cache.get('forex', {}),
-                           bonds=cache.get('bonds', {}),
-                           cryptos=cache.get('cryptos', {}))
+        news=news_data,
+        stocks=cache.get('stocks', {}), 
+        commodities=cache.get('commodities', {}),
+        etfs=cache.get('etfs', {}),
+        forex=cache.get('forex', {}),
+        bonds=cache.get('bonds', {}),
+        cryptos=cache.get('cryptos', {}))
 
 @socketio.on('request_data')
 def send_current_data():
@@ -113,6 +113,10 @@ def maps():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     thread = threading.Thread(target=background_task)
